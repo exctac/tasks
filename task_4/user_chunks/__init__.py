@@ -54,23 +54,35 @@ __all__ = (
 )
 
 
+def parse_user(user):
+    email, username = user
+    name, domain = email.split('@')
+    return domain, (name, username)
+
+
+def rebuild_user(user):
+    domain, (name, username) = user
+    return '@'.join((name, domain)), username
+
+
 def build_unique_user_chunks(file):
     content = csv.reader(file, delimiter=',')
     next(content)
 
-    users = Counter([tuple(name) for name in content])
+    users = Counter([parse_user(user) for user in content])
     unique_chunk_all = []
 
     while True:
-        unique_chunk = []
+        unique_chunk = dict()
         for user, count in users.items():
-            if count and user not in unique_chunk:
-                unique_chunk.append(user)
+            domain, _ = user
+            if count and domain not in unique_chunk:
+                unique_chunk[domain] = rebuild_user(user)
                 users[user] -= 1
 
         if not unique_chunk:
             break
 
-        unique_chunk_all.append(tuple(unique_chunk))
+        unique_chunk_all.append(tuple(unique_chunk.values()))
 
     return tuple(unique_chunk_all)
