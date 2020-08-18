@@ -3,9 +3,10 @@ from task_1.zipper import zipper
 
 def run():
     cases = [
-        (1, 2, ' == '),
-        (3, 4, ' < '),
-        (5, 6, ' > '),
+        (1, 2, ' chars == numbs'),
+        (3, 4, ' chars < numbs '),
+        (4, 3, ' numbs > chars '),
+        (5, 6, ' chars > numbs'),
     ]
 
     for i, j, exp in cases:

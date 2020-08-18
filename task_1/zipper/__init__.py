@@ -24,9 +24,17 @@ __all__ = (
 
 
 def zipper(file_1, file_2):
-    zip_lines = zip_longest(file_1, file_2)
+    chars = file_1.read().split()
+    numbers = file_2.read().split()
+
+    if chars[0].isdigit():
+        chars_ = chars
+        chars = numbers
+        numbers = chars_
+
+    zip_lines = zip_longest(chars, numbers)
     for item_1, item_2 in zip_lines:
         if item_1 is None:
             continue
 
-        yield item_1.rstrip(), item_2.rstrip() if item_2 else None
+        yield item_1, item_2
